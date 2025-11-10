@@ -9,7 +9,12 @@ A aplicação é desenvolvida com **Next.js (Frontend)**, **Express + Sequelize 
 ---
 
 ## 🧩 Arquitetura da Solução
-<img width="961" height="724" alt="Untitled diagram-2025-11-10-171045" src="https://github.com/user-attachments/assets/2f642066-aeca-45dc-96ff-dd25c80636ed" />
+```mermaid
+graph TD
+  A[Usuário] --> B[Frontend - Next.js]
+  B --> C[Backend - Express]
+  C --> D[(PostgreSQL)]
+```
 
 ---
 
