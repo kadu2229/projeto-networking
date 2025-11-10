@@ -15,6 +15,7 @@ A aplicação foi projetada com uma arquitetura em camadas, separando responsabi
 
 ## Arquitetura do Projeto
 
+```mermaid
 graph TD
   A[Usuário (Membro / Admin)] -->|Navegador| B[Frontend - Next.js + React]
   B -->|API REST (HTTP/JSON)| C[Backend - Node.js + Express]
@@ -54,4 +55,6 @@ graph TD
   D --> D4
   D --> D5
   D --> D6
+```
+
 
