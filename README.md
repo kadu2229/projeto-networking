@@ -17,14 +17,14 @@ A aplicação foi projetada com uma arquitetura em camadas, separando responsabi
 
 ```mermaid
 graph TD
-  A[Usuário (Membro / Admin)] -->|Navegador| B[Frontend - Next.js + React]
+  A[Usuario (Membro / Admin)] -->|Navegador| B[Frontend - Next.js + React]
   B -->|API REST (HTTP/JSON)| C[Backend - Node.js + Express]
   C -->|ORM Sequelize| D[(PostgreSQL)]
 
   subgraph Frontend [Frontend - Next.js]
-    B1[Páginas e Componentes React]
+    B1[Paginas e Componentes React]
     B2[Context API / Hooks para estado global]
-    B3[Axios para comunicação com a API]
+    B3[Axios para comunicacao com a API]
   end
   B --> B1
   B1 --> B2
@@ -42,11 +42,11 @@ graph TD
   C3 --> C4
 
   subgraph Banco_de_Dados [Banco de Dados - PostgreSQL]
-    D1[Tabela: Intenções]
+    D1[Tabela: Intencoes]
     D2[Tabela: Membros]
-    D3[Tabela: Indicações]
+    D3[Tabela: Indicacoes]
     D4[Tabela: Obrigados]
-    D5[Tabela: Reuniões]
+    D5[Tabela: Reunioes]
     D6[Tabela: Mensalidades]
   end
   D --> D1
@@ -56,5 +56,6 @@ graph TD
   D --> D5
   D --> D6
 ```
+
 
 
