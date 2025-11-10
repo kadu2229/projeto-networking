@@ -17,6 +17,7 @@ A aplicação foi projetada com uma arquitetura em camadas, separando responsabi
 
 ```mermaid
 graph TD
+
   A[Usuario (Membro / Admin)] -->|Navegador| B[Frontend - Next.js + React]
   B -->|API REST (HTTP/JSON)| C[Backend - Node.js + Express]
   C -->|ORM Sequelize| D[(PostgreSQL)]
