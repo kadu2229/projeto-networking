@@ -1,9 +1,8 @@
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
-const connection = new Sequelize('postgresql://postgres.gmydcnrcohdqvkffhzeb:1234@aws-1-us-east-1.pooler.supabase.com:5432/postgres', {
-  host: 'db.gmydcnrcohdqvkffhzeb.supabase.co',
+const connection = new Sequelize(process.env.DB_URL, {
   dialect: 'postgres',
-  port: 5432,
   dialectOptions: {
     ssl: {
       require: true,
@@ -16,9 +15,9 @@ const connection = new Sequelize('postgresql://postgres.gmydcnrcohdqvkffhzeb:123
 (async () => {
   try {
     await connection.authenticate();
-    console.log('✅ Conexão com o banco estabelecida com sucesso!');
+    console.log('Conexão com o banco estabelecida com sucesso!');
   } catch (err) {
-    console.error('❌ Erro ao conectar:', err);
+    console.error('Erro ao conectar:', err);
   }
 })();
 

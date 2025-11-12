@@ -1,14 +1,16 @@
 const { DataTypes } = require('sequelize');
-const conection = require('../db/conection');
+const connection = require('../db/conection');
+const bcrypt = require('bcryptjs');
 
-const cadidato = conection.define('candidato', {
+const Candidato = connection.define('candidato', {
   nome: {
     type: DataTypes.STRING,
     allowNull: false
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   empresa: {
     type: DataTypes.STRING,
@@ -17,9 +19,19 @@ const cadidato = conection.define('candidato', {
   whyUs: {
     type: DataTypes.STRING,
   },
+  senha: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   aprovacao: {
     type: DataTypes.STRING,
+    defaultValue: 'analise'
   }
-})
+});
 
-module.exports = cadidato;
+// Criptografa a senha antes de salvar
+Candidato.beforeCreate(async (user) => {
+  user.senha = await bcrypt.hash(user.senha, 10);
+});
+
+module.exports = Candidato;
