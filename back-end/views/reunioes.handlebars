@@ -1,0 +1,18 @@
+<h2 style="text-align:center;">Reuniões</h2>
+
+<div style="max-width:600px;margin:auto;">
+  {{#each reunioes}}
+    <div style="border:1px solid #ccc;padding:1rem;border-radius:8px;margin-bottom:1rem;background:white;">
+      <h3>{{this.titulo}}</h3>
+      <p><strong>Data:</strong> {{this.datahora}}</p>
+      <p><strong>Local:</strong> {{this.local}}</p>
+
+      <form action="/reunioes/{{this.id}}/checkin" method="POST" style="margin-top:1rem;">
+        <input type="hidden" name="membroId" value="1"> <!-- trocar depois -->
+        <button type="submit">Fazer Check-in</button>
+      </form>
+    </div>
+  {{else}}
+    <p>Nenhuma reunião agendada.</p>
+  {{/each}}
+</div>

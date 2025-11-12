@@ -1,0 +1,12 @@
+<h2 style="text-align:center;">Avisos e Comunicados</h2>
+<div style="max-width:600px;margin:auto;margin-top:2rem;">
+  {{#each avisos}}
+    <div style="border:1px solid #ccc;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+      <h3>{{this.titulo}}</h3>
+      <p>{{this.mensagem}}</p>
+      <small>{{this.datacriacao}}</small>
+    </div>
+  {{else}}
+    <p>Nenhum aviso publicado.</p>
+  {{/each}}
+</div>
