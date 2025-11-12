@@ -3,6 +3,7 @@ const hndbrs = require('express-handlebars');
 const app = express();
 const connection = require('./db/conection');
 const candidato = require('./models/candidato');
+const membro = require('./models/membro')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -38,8 +39,9 @@ app.get('/reprovado', (req, res) => {
   res.render('reprovado');
 });
 
-app.get('/formulario-completo', (req, res) => {
-  res.render('formulario-completo');
+app.get('/aprovado/:id', (req, res) => {
+  const { id } = req.params;
+  res.render('aprovado', {id:id});
 });
 
 
@@ -102,7 +104,7 @@ app.post('/login', async (req, res) => {
 
     //Redireciona de acordo com o status
     if (user.aprovacao === 'aprovado') {
-      return res.redirect('/formulario-completo');
+      return res.redirect(`/aprovado/${user.id}`);
     } else if (user.aprovacao === 'analise') {
       return res.redirect('/analise');
     } else if (user.aprovacao === 'reprovado') {
@@ -114,6 +116,32 @@ app.post('/login', async (req, res) => {
     res.status(500).send('Erro no servidor.');
   }
 });
+
+app.post('/completarCadastro/:id', async (req, res) => {
+  const { telefone, profissao, linkedin, empresaAtual, descricao } = req.body;
+  const { id } = req.params;
+
+  try {
+    console.log('Candidato ID:', id);
+    console.log('Dados recebidos:', req.body);
+
+    await membro.create({
+      telefone,
+      profissao,
+      linkedin,
+      empresaAtual,
+      descricao,
+      candidatoId: id
+    });
+
+    res.send('Cadastro completo enviado com sucesso!');
+  } catch (err) {
+    console.error('Erro ao completar cadastro:', err);
+    res.status(500).send('Erro ao enviar formulário completo.');
+  }
+});
+
+
 
 
 async function startServer() {
