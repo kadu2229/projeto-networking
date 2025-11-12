@@ -6,7 +6,7 @@
 graph TD
   A[Usuário] --> B[Frontend - Next.js + React + TypeScript]
   B --> C[Backend - Express + Sequelize]
-  C --> D[(TiDB / PostgreSQL)]
+  C --> D[(Supabase / PostgreSQL)]
 ```
 
 ---
