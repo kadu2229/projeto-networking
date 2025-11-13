@@ -185,6 +185,127 @@ body {
   text-decoration: underline;
 }
 
+.reunioes-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.reunioes-container h1 {
+  color: #0d47a1;
+  margin-bottom: 1rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  margin-bottom: 0.5rem;
+  color: #0d47a1;
+}
+
+.card p {
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.checkinButton {
+  margin-top: 1rem;
+  background-color: #ffca28;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.checkinButton:hover {
+  background-color: #f9a825;
+}
+
+.feedback {
+  text-align: center;
+  margin-top: 1rem;
+  color: green;
+  font-weight: 500;
+}
+
+.admin-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.admin-container h1 {
+  color: #0d47a1;
+  margin-bottom: 1rem;
+}
+
+.candidatos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.candidatos-table th,
+.candidatos-table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.candidatos-table th {
+  background-color: #0d47a1;
+  color: white;
+}
+
+.candidatos-table td {
+  background-color: #f9f9f9;
+}
+
+.aprovar {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  margin-right: 0.3rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.aprovar:hover {
+  background-color: #43a047;
+}
+
+.reprovar {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reprovar:hover {
+  background-color: #e53935;
+}
+
+.feedback {
+  text-align: center;
+  margin: 1rem 0;
+  color: green;
+  font-weight: 500;
+}
+
 
 /* Mobile */
 @media (max-width: 768px) {

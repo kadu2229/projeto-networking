@@ -9,7 +9,7 @@ router.post('/addcandidato', candidatoController.addCandidato);
 router.post('/login', candidatoController.login);
 
 // Aprovar / Reprovar candidato (admin)
-router.post('/aprovar/:id', candidatoController.aprovar);
-router.post('/reprovar/:id', candidatoController.reprovar);
+router.patch('/aprovar/:id', candidatoController.aprovar);
+router.patch('/reprovar/:id', candidatoController.reprovar);
 
 module.exports = router;
