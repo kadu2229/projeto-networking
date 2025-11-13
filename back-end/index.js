@@ -1,38 +1,31 @@
-// app.js (refatorado)
+// app.js (API REST)
 const express = require('express');
-const hndbrs = require('express-handlebars');
 const connection = require('./db/conection');
 
-// Rotas
+// Rotas (MVC)
 const candidatoRoutes = require('./routes/candidatoRoutes');
 const avisoRoutes = require('./routes/avisoRoutes');
 const reuniaoRoutes = require('./routes/reuniaoRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const cors = require('cors');
 
 const app = express();
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
+// Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-// Handlebars
-app.engine('handlebars', hndbrs.engine());
-app.set('view engine', 'handlebars');
+// Rotas da API (todas começam com /api)
+app.use('/api', candidatoRoutes);
+app.use('/api', avisoRoutes);
+app.use('/api', reuniaoRoutes);
+app.use('/api', adminRoutes);
 
-// Rotas públicas
-app.get('/', (req, res) => res.render('login'));
-app.get('/candidatura', (req, res) => res.render('candidatura'));
-app.get('/analise', (req, res) => res.render('analise'));
-app.get('/reprovado', (req, res) => res.render('reprovado'));
-app.get('/aprovado/:id', (req, res) => res.render('aprovado', { id: req.params.id }));
-app.get('/admin/avisos', (req, res) => res.render('adminAvisoForm'));
-app.get('/admin/reunioes', (req, res) => res.render('adminReuniaoForm'));
-
-// Rotas de funcionalidades (MVC)
-app.use(candidatoRoutes);
-app.use(avisoRoutes);
-app.use(reuniaoRoutes);
-app.use(adminRoutes);
+// Rota padrão
+app.get('/', (req, res) => {
+  res.json({ mensagem: 'API ativa e rodando 🚀' });
+});
 
 // Iniciar servidor
 async function startServer() {
@@ -40,7 +33,6 @@ async function startServer() {
     await connection.sync();
 
     const PORT = process.env.PORT || 3000;
-
     app.listen(PORT, () => {
       console.log(`✅ Servidor rodando na porta ${PORT}`);
       console.log('✅ Conexão e sincronização com o banco bem-sucedida');
