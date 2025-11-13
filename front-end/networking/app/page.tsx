@@ -1,49 +1,79 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export default function Page() {
-  const [form, setForm] = useState({ nome: '', email: '', empresa: '', whyUs: '', senha: '', login: '' });
-  const [msg, setMsg] = useState('');
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMsg('Enviando...');
+    setLoading(true);
+    setMessage("");
+
     try {
-      const res = await fetch('http://localhost:3001/admin/candidatos/nova', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (res.ok) setMsg('🎉 Intenção enviada com sucesso!');
-      else setMsg('❌ Erro ao enviar intenção.');
-    } catch {
-      setMsg('⚠️ Erro de conexão.');
+      const res = await axios.post(
+        "https://projeto-networking.onrender.com/api/login",
+        { email, senha }
+      );
+
+      // Redireciona conforme role retornada do backend
+      if (res.data.role === "admin") {
+        router.push("/admin");
+      } else if (res.data.role === "candidato") {
+        router.push("/reunioes");
+      } else {
+        setMessage("E-mail ou senha incorretos!");
+      }
+    } catch (err: any) {
+      console.error(err);
+      if (err.response && err.response.data && err.response.data.error) {
+        setMessage(err.response.data.error);
+      } else {
+        setMessage("Erro ao conectar com o servidor");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-[80vh]">
-      <div className="bg-white p-8 md:p-10 rounded-2xl shadow-2xl w-full max-w-lg">
-        <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">Participar do Grupo</h1>
-        <p className="text-center text-gray-600 mb-8">Preencha os campos abaixo para enviar sua intenção de participação.</p>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <input name="nome" placeholder="Nome completo" onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-600 outline-none" required />
-          <input name="email" type="email" placeholder="E-mail" onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-600 outline-none" required />
-          <input name="empresa" placeholder="Empresa" onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-600 outline-none" />
-          <textarea name="whyUs" placeholder="Por que deseja participar?" onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-600 outline-none" />
-          <div className="grid grid-cols-2 gap-4">
-            <input name="login" placeholder="Usuário" onChange={handleChange} className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-600 outline-none" required />
-            <input name="senha" type="password" placeholder="Senha" onChange={handleChange} className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-600 outline-none" required />
-          </div>
-          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition">
-            Enviar Intenção
+    <div className="login-container">
+      <div className="login-box">
+        <h1>Networking Login</h1>
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>
-        {msg && <p className="text-center mt-4 text-gray-700">{msg}</p>}
+
+        {message && <p className="feedback">{message}</p>}
+
+        {/* Link para cadastro */}
+        <p className="cadastro-link">
+          Ainda não tem login? <a href="/candidatura">Crie sua intenção aqui</a>
+        </p>
+
+        <p>© {new Date().getFullYear()} Networking</p>
       </div>
-    </section>
+    </div>
   );
 }

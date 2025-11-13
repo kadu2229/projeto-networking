@@ -19,10 +19,10 @@ const addCandidato = async (req, res) => {
       aprovacao
     });
 
-    res.status(201).json(novoCandidato); // 👈 retorna o candidato criado
+    res.status(201).json({ success: true, candidato: novoCandidato });
   } catch (err) {
     console.error('Erro ao cadastrar candidato:', err);
-    res.status(500).json({ error: 'Erro ao cadastrar candidato.' });
+    res.status(500).json({ success: false, error: 'Erro ao cadastrar candidato.' });
   }
 };
 
@@ -30,20 +30,20 @@ const addCandidato = async (req, res) => {
 const login = async (req, res) => {
   const { email, senha } = req.body;
 
-  // Login de admin (fixo via .env)
+  // Login de admin
   if (email === process.env.ADMIN_EMAIL && senha === process.env.ADMIN_PASSWORD) {
-    return res.json({ role: 'admin', redirect: '/admin' }); // 👈 agora responde com JSON
+    return res.json({ success: true, role: 'admin', redirect: '/admin' });
   }
 
-  // Login de candidato
   try {
     const candidato = await Candidato.findOne({ where: { email } });
-    if (!candidato) return res.status(404).json({ error: 'Candidato não encontrado.' });
+    if (!candidato) return res.status(404).json({ success: false, error: 'Candidato não encontrado.' });
 
     const senhaCorreta = await bcrypt.compare(senha, candidato.senha);
-    if (!senhaCorreta) return res.status(401).json({ error: 'Senha incorreta.' });
+    if (!senhaCorreta) return res.status(401).json({ success: false, error: 'Senha incorreta.' });
 
     res.json({
+      success: true,
       role: 'candidato',
       id: candidato.id,
       nome: candidato.nome,
@@ -51,7 +51,7 @@ const login = async (req, res) => {
     });
   } catch (err) {
     console.error('Erro ao fazer login:', err);
-    res.status(500).json({ error: 'Erro ao processar login.' });
+    res.status(500).json({ success: false, error: 'Erro ao processar login.' });
   }
 };
 
@@ -59,10 +59,10 @@ const login = async (req, res) => {
 const aprovar = async (req, res) => {
   try {
     await Candidato.update({ aprovacao: 'aprovado' }, { where: { id: req.params.id } });
-    res.json({ message: 'Candidato aprovado com sucesso.' });
+    res.json({ success: true, message: 'Candidato aprovado com sucesso.' });
   } catch (err) {
     console.error('Erro ao aprovar candidato:', err);
-    res.status(500).json({ error: 'Erro ao aprovar candidato.' });
+    res.status(500).json({ success: false, error: 'Erro ao aprovar candidato.' });
   }
 };
 
@@ -70,10 +70,10 @@ const aprovar = async (req, res) => {
 const reprovar = async (req, res) => {
   try {
     await Candidato.update({ aprovacao: 'reprovado' }, { where: { id: req.params.id } });
-    res.json({ message: 'Candidato reprovado com sucesso.' });
+    res.json({ success: true, message: 'Candidato reprovado com sucesso.' });
   } catch (err) {
     console.error('Erro ao reprovar candidato:', err);
-    res.status(500).json({ error: 'Erro ao reprovar candidato.' });
+    res.status(500).json({ success: false, error: 'Erro ao reprovar candidato.' });
   }
 };
 
